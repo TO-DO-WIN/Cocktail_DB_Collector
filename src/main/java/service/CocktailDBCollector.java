@@ -1,5 +1,7 @@
 package service;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Drinks;
 import model.DrinkList;
@@ -14,20 +16,24 @@ import java.net.URISyntaxException;
 
 public class CocktailDBCollector {
 
-    private static final String baseURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?";
+    private static final String baseURL = "https://www.thecocktaildb.com/api/json/v1/1/";
 
     public void getAndCacheCocktails() {
         DrinkList completeDrinkList = getCompleteDrinkList();
 
         for(Drinks i : completeDrinkList.getDrinks()){
             System.out.println("Drink: "+i.getStrDrink() + " ID: "+i.getIdDrink());
+            Drinks newDrink = getDrinkDetails(i.getIdDrink());
+            completeDrinkList.getDrinks().add(newDrink);
+            completeDrinkList.getDrinks().remove(i);
         }
 
     }
 
+
     private DrinkList getCompleteDrinkList() {
-        String ordinaryDrinkListString = httpGetResponse(baseURL + "c=Ordinary_Drink");
-        String cocktailDrinkListString = httpGetResponse(baseURL + "c=Cocktail");
+        String ordinaryDrinkListString = httpGetResponse(baseURL + "filter.php?c=Ordinary_Drink");
+        String cocktailDrinkListString = httpGetResponse(baseURL + "filter.php?c=Cocktail");
         DrinkList ordinaryDrinkList = mapListObject(ordinaryDrinkListString);
         DrinkList cocktailDrinkList = mapListObject(cocktailDrinkListString);
         DrinkList completeList = new DrinkList();
@@ -66,6 +72,34 @@ public class CocktailDBCollector {
         }
         return mappedDrinkList;
     }
+
+    private Drinks getDrinkDetails(String idDrink) {
+        String drinkDetailsString = httpGetResponse(baseURL + "lookup.php?i="+idDrink);
+        Drinks drinkDetails = mapDrinkObject(drinkDetailsString);
+        return drinkDetails;
+    }
+
+    private Drinks mapDrinkObject(String drinkDetailsString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        DrinkList mappedDrinkDetails = null;
+        try {
+            mappedDrinkDetails = objectMapper.readValue(drinkDetailsString,DrinkList.class);
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return mappedDrinkDetails.getDrinks().get(0);
+    }
+
+    private void setDrinkDetailsByID(){
+        //
+
+
+    }
+
 
 
 }
