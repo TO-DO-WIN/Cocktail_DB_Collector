@@ -28,6 +28,8 @@ public class CocktailDBCollector {
             completeDrinkList.getDrinks().remove(i);
         }
 
+        System.out.println();
+
     }
 
 
