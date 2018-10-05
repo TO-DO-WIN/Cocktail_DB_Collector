@@ -14,6 +14,8 @@ public class MySQLDBConnect {
         private String username = null;
         private String password = null;
 
+        public void newMethod(){};
+
         public MySQLDBConnect(String host, String port, String databaseName, String username, String password) throws SQLException {
             this.host = host;
             this.port = port;
