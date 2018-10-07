@@ -9,6 +9,14 @@ public class DrinkList {
 
     private ArrayList<Drinks> drinks;
 
+    public DrinkList(){
+        this.drinks = new ArrayList<>();
+    }
+
+    public void addDrink(Drinks newDrink){
+        this.drinks.add(newDrink);
+    }
+
     public ArrayList<Drinks> getDrinks() {
         return drinks;
     }

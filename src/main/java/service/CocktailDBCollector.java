@@ -5,14 +5,17 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Drinks;
 import model.DrinkList;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import repository.MixMeDBRepo;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 
 public class CocktailDBCollector {
 
@@ -20,18 +23,26 @@ public class CocktailDBCollector {
 
     public void getAndCacheCocktails() {
         DrinkList completeDrinkList = getCompleteDrinkList();
-
+        DrinkList completeDrinkListDetails = new DrinkList();
         for(Drinks i : completeDrinkList.getDrinks()){
             System.out.println("Drink: "+i.getStrDrink() + " ID: "+i.getIdDrink());
             Drinks newDrink = getDrinkDetails(i.getIdDrink());
-            completeDrinkList.getDrinks().add(newDrink);
-            completeDrinkList.getDrinks().remove(i);
+            completeDrinkListDetails.addDrink(newDrink);
         }
 
+        cacheCocktails(completeDrinkListDetails);
         System.out.println();
 
     }
 
+    private void cacheCocktails(DrinkList completeDrinkList) {
+        MixMeDBRepo newRepository = new MixMeDBRepo();
+        try {
+            newRepository.persistObject(completeDrinkList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private DrinkList getCompleteDrinkList() {
         String ordinaryDrinkListString = httpGetResponse(baseURL + "filter.php?c=Ordinary_Drink");
@@ -96,11 +107,6 @@ public class CocktailDBCollector {
         return mappedDrinkDetails.getDrinks().get(0);
     }
 
-    private void setDrinkDetailsByID(){
-        //
-
-
-    }
 
 
 

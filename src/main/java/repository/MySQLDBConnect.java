@@ -1,11 +1,8 @@
 package repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class MySQLDBConnect {
-
 
         private String host = null;
         private String port = null;
@@ -13,8 +10,11 @@ public class MySQLDBConnect {
         private boolean useSSL = false;
         private String username = null;
         private String password = null;
+        private Connection connection = null;
 
-        public void newMethod(){};
+        public void newMethod(){}
+
+        private MySQLDBConnect(){}
 
         public MySQLDBConnect(String host, String port, String databaseName, String username, String password) throws SQLException {
             this.host = host;
@@ -22,35 +22,31 @@ public class MySQLDBConnect {
             this.databaseName = databaseName;
             this.username = username;
             this.password = password;
+            this.connection = createConnection(this.host,this.port,this.databaseName, this.username, this.password);
         }
 
-        public Connection getConnetion() throws SQLException {
-            String url = String.format("jdbc:mysql://%s:%s/%s?useSSL=%s",this.host,this.port,this.databaseName,this.useSSL+"");
-            Connection newConnection = DriverManager.getConnection(url,this.username, this.password);
-            return newConnection;
+        public Connection getConnection() throws SQLException {
+            return this.connection ;
         }
 
-        public Connection createConnection(String host, String port, String databaseName, String username, String password) throws SQLException {
+
+
+        private Connection createConnection(String host, String port, String databaseName, String username, String password) throws SQLException {
             this.host = host;
             this.port = port;
             this.databaseName = databaseName;
             this.username = username;
             this.password = password;
-            String url = String.format("jdbc:mysql://%s:%s/%s?useSSL=%s",this.host,this.port,this.databaseName,this.useSSL+"");
-            Connection newConnection = DriverManager.getConnection(url,this.username, this.password);
-            return newConnection;
-        }
+            //jdbc:mysql://localhost:3306/?user=root
+            String url = String.format("jdbc:mysql://%s:%s/%s",this.host,this.port,this.databaseName);
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                this.connection = DriverManager.getConnection(url,this.username, this.password);
 
-        public Connection createConnection(String host, String port, String databaseName, String username, String password, boolean useSSL) throws SQLException {
-            this.host = host;
-            this.port = port;
-            this.databaseName = databaseName;
-            this.username = username;
-            this.password = password;
-            this.useSSL = useSSL;
-            String url = String.format("jdbc:mysql://%s:%s/%s?useSSL=%s",this.host,this.port,this.databaseName,this.useSSL+"");
-            Connection newConnection = DriverManager.getConnection(url,this.username, this.password);
-            return newConnection;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return this.connection;
         }
 
         public String getHost() {
