@@ -27,4 +27,6 @@ dependencies {
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
     compile("org.springframework:spring-web")
     compile("com.fasterxml.jackson.core:jackson-databind")
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
+
 }
