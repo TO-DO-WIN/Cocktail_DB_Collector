@@ -38,11 +38,10 @@ public class MySQLDBConnect {
             this.username = username;
             this.password = password;
             //jdbc:mysql://localhost:3306/?user=root
-            String url = String.format("jdbc:mysql://%s:%s/%s",this.host,this.port,this.databaseName);
+            String url = String.format("jdbc:mysql://%s:%s/%s?useSSL=false",this.host,this.port,this.databaseName);
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 this.connection = DriverManager.getConnection(url,this.username, this.password);
-
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
