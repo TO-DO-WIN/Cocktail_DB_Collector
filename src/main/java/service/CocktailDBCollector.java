@@ -21,7 +21,10 @@ public class CocktailDBCollector {
 
     private static final String baseURL = "https://www.thecocktaildb.com/api/json/v1/1/";
 
+
+
     public void getAndCacheCocktails() {
+
         DrinkList completeDrinkList = getCompleteDrinkList();
         DrinkList completeDrinkListDetails = new DrinkList();
         for(Drinks i : completeDrinkList.getDrinks()){
@@ -75,6 +78,13 @@ public class CocktailDBCollector {
         return stringResponseEntity.getBody();
     }
 
+    /**
+     * Receives JSON formatted object and maps to modeled class
+     * Class should match attributes and children attributes of incoming JSON
+     * DrinkList object contains an array of Drinks objects
+     * @param drinkListJson
+     * @return DrinkList
+     * */
     private DrinkList mapListObject(String drinkListJson) {
         ObjectMapper objectMapper = new ObjectMapper();
         DrinkList mappedDrinkList = null;
@@ -86,6 +96,12 @@ public class CocktailDBCollector {
         return mappedDrinkList;
     }
 
+    /**
+     * Uses cocktail DB to search for drink by ID and return all drink details for that drink
+     * Map drink details to drink object and return Drinks object to calling method
+     * @param idDrink
+     * @return Drinks
+     * */
     private Drinks getDrinkDetails(String idDrink) {
         String drinkDetailsString = httpGetResponse(baseURL + "lookup.php?i="+idDrink);
         Drinks drinkDetails = mapDrinkObject(drinkDetailsString);

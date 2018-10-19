@@ -25,11 +25,11 @@ public class MixMeDBRepo {
         try {
             connect = new MySQLDBConnect(host, port, databaseName, userName, password);
             connection = connect.getConnection();
-            String insertStatement = "INSERT INTO cocktaildb.drinks " +
+            String insertStatement = "INSERT INTO mixme.drinks " +
                     "(strDrink,idDrink,strDrinkES,strDrinkDE,strDrinkFR,strVideo,strCategory,strIBA,strAlcoholic,strGlass,strInstructions," +
-                    "strInstructionsES,strInstructionsDE,strInstructionsFR,strDrinkThumb,strIredient1,strIredient2,strIredient3,strIredient4," +
-                    "strIredient5,strIredient6,strIredient7,strIredient8,strIredient9,strIredient10,strIredient11,strIredient12,strIredient13," +
-                    "strIredient14,strIredient15,strMeasure1,strMeasure2,strMeasure3,strMeasure4,strMeasure5,strMeasure6,strMeasure7,strMeasure8," +
+                    "strInstructionsES,strInstructionsDE,strInstructionsFR,strDrinkThumb,strIngredient1,strIngredient2,strIngredient3,strIngredient4," +
+                    "strIngredient5,strIngredient6,strIngredient7,strIngredient8,strIngredient9,strIngredient10,strIngredient11,strIngredient12,strIngredient13," +
+                    "strIngredient14,strIngredient15,strMeasure1,strMeasure2,strMeasure3,strMeasure4,strMeasure5,strMeasure6,strMeasure7,strMeasure8," +
                     "strMeasure9,strMeasure10,strMeasure11,strMeasure12,strMeasure13,strMeasure14,strMeasure15,dateModified) " +
                     "VALUES " +
                     "(? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? );";
