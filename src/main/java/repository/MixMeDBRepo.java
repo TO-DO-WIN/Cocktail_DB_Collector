@@ -14,11 +14,11 @@ public class MixMeDBRepo {
 
     public void persistObject(DrinkList completeDrinkList) throws SQLException {
         //Fill before running
-        String host = "127.0.0.2";
-        String port = "3306";
-        String databaseName = "MixMe";
-        String userName = "Nick";
-        String password = "v0jMP9iuioT@";
+        String host = "";
+        String port = "";
+        String databaseName = "";
+        String userName = "";
+        String password = "";
 //        String password = "";
         MySQLDBConnect connect = null;
         Connection connection = null;
